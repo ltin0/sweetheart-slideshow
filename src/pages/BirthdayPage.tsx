@@ -5,6 +5,10 @@ import HeartParticles from "@/components/HeartParticles";
 import heroImage from "@/assets/hero-romantic.jpg";
 import rosesImage from "@/assets/roses-bg.jpg";
 import starryImage from "@/assets/starry-romantic.jpg";
+import photo1 from "../assets/WhatsApp Image 2026-02-23 at 19.54.26.jpeg";
+import photo2 from "../assets/WhatsApp Image 2026-02-23 at 19.57.13.jpeg";
+import photo3 from "../assets/WhatsApp Image 2026-02-23 at 19.57.44.jpeg";
+import video1 from "../assets/WhatsApp Video 2026-02-23 at 19.56.31.mp4";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
@@ -164,7 +168,7 @@ const BirthdayPage = () => {
               "{section.text}"
             </p>
 
-            {/* Photo placeholder */}
+            {/* Foto ou vídeo */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -172,12 +176,20 @@ const BirthdayPage = () => {
               transition={{ delay: 0.4, duration: 0.6 }}
               className="mt-10 photo-frame rounded-2xl overflow-hidden mx-auto max-w-sm aspect-square bg-muted/20 flex items-center justify-center"
             >
-              <div className="text-center p-8">
-                <Heart className="w-10 h-10 mx-auto text-primary/40 mb-3" />
-                <p className="font-body text-sm text-muted-foreground">
-                  Coloque sua foto aqui
-                </p>
-              </div>
+              {index === 0 && (
+                <img src={photo1} alt="Foto 1" className="object-cover w-full h-full" />
+              )}
+              {index === 1 && (
+                <img src={photo2} alt="Foto 2" className="object-cover w-full h-full" />
+              )}
+              {index === 2 && (
+                <img src={photo3} alt="Foto 3" className="object-cover w-full h-full" />
+              )}
+              {index === 3 && (
+                <video src={video1} controls className="object-cover w-full h-full">
+                  Seu navegador não suporta vídeo.
+                </video>
+              )}
             </motion.div>
           </motion.div>
         </section>
