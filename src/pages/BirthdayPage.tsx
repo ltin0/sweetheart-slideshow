@@ -9,6 +9,7 @@ import photo1 from "../assets/WhatsApp Image 2026-02-23 at 19.54.26.jpeg";
 import photo2 from "../assets/WhatsApp Image 2026-02-23 at 19.57.13.jpeg";
 import photo3 from "../assets/WhatsApp Image 2026-02-23 at 19.57.44.jpeg";
 import video1 from "../assets/WhatsApp Video 2026-02-23 at 19.56.31.mp4";
+import carrelesWhisper from "../assets/carreles-whisper.mp3";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
@@ -87,6 +88,7 @@ const BirthdayPage = () => {
 
   return (
     <div className="relative bg-background">
+      <audio src={carrelesWhisper} autoPlay loop hidden />
       <HeartParticles />
 
       {/* Hero Section */}
@@ -109,6 +111,7 @@ const BirthdayPage = () => {
           <motion.div
             animate={{ scale: [1, 1.3, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
+            className="relative z-10 text-center px-4"
           >
             <Heart className="w-20 h-20 mx-auto text-primary fill-primary mb-6" />
           </motion.div>
