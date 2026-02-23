@@ -1,4 +1,5 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useState } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { Heart, Sparkles, Star, Gift } from "lucide-react";
 import HeartParticles from "@/components/HeartParticles";
 import heroImage from "@/assets/hero-romantic.jpg";
@@ -15,27 +16,27 @@ const fadeInUp = {
 const sections = [
   {
     title: "Feliz Aniversário",
-    subtitle: "Meu Amor",
+    subtitle: "Alanis ❤",
     text: "Hoje é o dia mais especial do ano, porque é o dia em que você nasceu. O mundo ficou mais bonito quando você chegou nele.",
     icon: Heart,
     bg: heroImage,
   },
   {
-    title: "Você é minha estrela",
+    title: "Alanis, você é minha estrela",
     subtitle: "",
     text: "Em cada momento ao seu lado, eu descubro um novo motivo para te amar. Seu sorriso ilumina os meus dias mais escuros e seu abraço é o meu lugar favorito no mundo.",
     icon: Star,
     bg: starryImage,
   },
   {
-    title: "Nosso Amor",
+    title: "Nosso Amor, Alanis",
     subtitle: "",
     text: "Cada segundo com você é uma eternidade de felicidade. Você transformou minha vida em algo mágico, cheio de cores e sentimentos que eu nem sabia que existiam.",
     icon: Sparkles,
     bg: rosesImage,
   },
   {
-    title: "Para Sempre",
+    title: "Para Sempre, Alanis",
     subtitle: "",
     text: "Eu prometo estar ao seu lado em todos os momentos, nos sorrisos e nas lágrimas, nas aventuras e no silêncio. Porque com você, até o silêncio é perfeito.",
     icon: Gift,
@@ -51,9 +52,34 @@ const phrases = [
   "Te amo mais do que as palavras podem dizer 💕",
 ];
 
+const loveMessages = [
+  "Alanis, você é o amor da minha vida! 💖",
+  "Cada dia com você é um sonho! ✨",
+  "Meu coração é todo seu, Alanis! 💝",
+  "Você me faz a pessoa mais feliz do mundo! 🥰",
+  "Alanis, eu te amo infinitamente! 💕",
+  "Você é minha pessoa favorita! 🌹",
+  "Obrigado por existir, Alanis! 💗",
+];
+
 const BirthdayPage = () => {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0.3]);
+  const [showLove, setShowLove] = useState(false);
+  const [messageIndex, setMessageIndex] = useState(0);
+  const [hearts, setHearts] = useState<{ id: number; x: number; y: number }[]>([]);
+
+  const handleLoveClick = () => {
+    setShowLove(true);
+    setMessageIndex((prev) => (prev + 1) % loveMessages.length);
+    const newHearts = Array.from({ length: 12 }, (_, i) => ({
+      id: Date.now() + i,
+      x: Math.random() * 300 - 150,
+      y: -(Math.random() * 200 + 100),
+    }));
+    setHearts(newHearts);
+    setTimeout(() => setHearts([]), 2000);
+  };
 
   return (
     <div className="relative bg-background">
@@ -85,6 +111,9 @@ const BirthdayPage = () => {
           <h1 className="text-7xl md:text-9xl font-romantic text-glow text-foreground mb-4">
             Feliz Aniversário
           </h1>
+          <p className="text-4xl md:text-5xl font-romantic text-foreground mb-4">
+            Alanis
+          </p>
           <p className="text-2xl md:text-3xl font-elegant italic text-foreground/80">
             Meu amor, este dia é todo seu ❤
           </p>
@@ -208,15 +237,64 @@ const BirthdayPage = () => {
             <Heart className="w-24 h-24 mx-auto text-primary fill-primary mb-8" />
           </motion.div>
 
-          <h2 className="text-6xl md:text-8xl font-romantic text-glow text-foreground mb-6">
+          <h2 className="text-6xl md:text-8xl font-romantic text-glow text-foreground mb-2">
             Te Amo
           </h2>
+          <p className="text-4xl md:text-5xl font-romantic text-foreground/90 mb-6">
+            Alanis ❤
+          </p>
           <p className="text-2xl md:text-3xl font-elegant italic text-foreground/80 mb-4">
             Hoje, amanhã e para sempre.
           </p>
-          <p className="text-lg font-elegant text-muted-foreground">
+          <p className="text-lg font-elegant text-muted-foreground mb-10">
             Com todo o meu amor ❤
           </p>
+
+          {/* Interactive Love Button */}
+          <div className="relative inline-block">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={handleLoveClick}
+              className="relative px-8 py-4 rounded-full bg-primary text-primary-foreground font-body text-lg font-medium romantic-border animate-pulse-glow cursor-pointer"
+            >
+              💖 Clique aqui, meu amor 💖
+            </motion.button>
+
+            {/* Exploding hearts */}
+            <AnimatePresence>
+              {hearts.map((heart) => (
+                <motion.span
+                  key={heart.id}
+                  initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+                  animate={{ opacity: 0, scale: 0.5, x: heart.x, y: heart.y }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 1.5, ease: "easeOut" }}
+                  className="absolute left-1/2 top-1/2 text-2xl pointer-events-none"
+                >
+                  {["❤️", "💕", "💖", "💗", "🌹", "✨"][Math.floor(Math.random() * 6)]}
+                </motion.span>
+              ))}
+            </AnimatePresence>
+          </div>
+
+          {/* Love message */}
+          <AnimatePresence mode="wait">
+            {showLove && (
+              <motion.div
+                key={messageIndex}
+                initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.8 }}
+                transition={{ duration: 0.5, type: "spring" }}
+                className="mt-8 p-6 rounded-2xl romantic-border bg-card/60 backdrop-blur-sm max-w-md mx-auto"
+              >
+                <p className="text-2xl md:text-3xl font-romantic text-glow text-foreground">
+                  {loveMessages[messageIndex]}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
       </section>
     </div>
